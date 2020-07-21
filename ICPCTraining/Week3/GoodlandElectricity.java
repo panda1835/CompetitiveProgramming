@@ -40,7 +40,17 @@ public class GoodlandElectricity{
             int counter = 0;
             while(counter <= numCity){
                 int flag = -1;
-                for(int i = 0; i < numCity; i++){
+
+                int head = counter-distribution+1;
+                int tail = counter+distribution-1;
+                if (head<0){
+                    head = 0;
+                }
+                if(tail >= numCity){
+                    tail = numCity-1;
+                }
+
+                for(int i = head; i <= tail; i++){
                     if (relation.containsKey(i)){
                         if (relation.get(i).contains(counter)){
                             flag = i;
