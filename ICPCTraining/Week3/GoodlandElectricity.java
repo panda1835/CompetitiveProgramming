@@ -7,7 +7,7 @@ public class GoodlandElectricity{
         Scanner input = new Scanner(System.in);
         int numCity = input.nextInt();
         int distribution = input.nextInt();
-        int[] sum = new int[numCity];
+        
         Map<Integer, Integer[]> relation = new HashMap<>();
 
         for (int i = 0; i < numCity; i++){
@@ -28,7 +28,6 @@ public class GoodlandElectricity{
                 for (int j = low; j <= high; j++){
                     relation.get(i)[0] = low;
                     relation.get(i)[1] = high;
-                    sum[j] ++;
                 }
             }
         }
