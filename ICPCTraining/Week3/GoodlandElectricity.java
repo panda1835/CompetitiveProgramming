@@ -8,26 +8,26 @@ public class GoodlandElectricity{
         int numCity = input.nextInt();
         int distribution = input.nextInt();
         int[] sum = new int[numCity];
-        Set<Integer> zeros = new HashSet<>();
-        Map<Integer, Set<Integer>> relation = new HashMap<>();
+        Map<Integer, Integer[]> relation = new HashMap<>();
 
         for (int i = 0; i < numCity; i++){
             int city = input.nextInt();
 
             if(city == 1) {
                 if (!relation.containsKey(i)){
-                    relation.put(i, new HashSet<Integer>());
+                    relation.put(i, new Integer[2]);
                 }
-                int head = i-distribution+1;
-                int tail = i+distribution-1;
-                if (head<0){
-                    head = 0;
+                int low = i-distribution+1;
+                int high = i+distribution-1;
+                if (low<0){
+                    low = 0;
                 }
-                if(tail >= numCity){
-                    tail = numCity-1;
+                if(high >= numCity){
+                    high = numCity-1;
                 }
-                for (int j = head; j <= tail; j++){
-                    relation.get(i).add(j);
+                for (int j = low; j <= high; j++){
+                    relation.get(i)[0] = low;
+                    relation.get(i)[1] = high;
                     sum[j] ++;
                 }
             }
@@ -38,22 +38,24 @@ public class GoodlandElectricity{
 
         if(bol){
             int counter = 0;
-            while(counter <= numCity){
+            while(counter < numCity){
                 int flag = -1;
 
-                int head = counter-distribution+1;
-                int tail = counter+distribution-1;
-                if (head<0){
-                    head = 0;
+                int low = counter - distribution+1;
+                int high = counter + distribution-1;
+                if (low<0){
+                    low = 0;
                 }
-                if(tail >= numCity){
-                    tail = numCity-1;
+                if(high >= numCity){
+                    high = numCity-1;
                 }
 
-                for(int i = head; i <= tail; i++){
+                for(int i = high; i >= low; i--){
                     if (relation.containsKey(i)){
-                        if (relation.get(i).contains(counter)){
+                        if ((counter <= relation.get(i)[1]) && 
+                        ((counter >= relation.get(i)[0]))){
                             flag = i;
+                            break;
                         }
                     }
                 }
@@ -62,14 +64,7 @@ public class GoodlandElectricity{
                     break;
                 }
                 ans++;
-                int precounter = counter;
-                for(int i = flag; i < numCity; i++){
-                    if (!relation.get(flag).contains(i)){
-                        counter = i;
-                        break;
-                    }
-                }
-                if (precounter == counter) break;  
+                counter = relation.get(flag)[1] + 1;
             }
         }
         
