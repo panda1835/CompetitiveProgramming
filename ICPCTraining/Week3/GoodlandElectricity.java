@@ -7,17 +7,14 @@ public class GoodlandElectricity{
         Scanner input = new Scanner(System.in);
         int numCity = input.nextInt();
         int distribution = input.nextInt();
-        int a = 0;
         int[] sum = new int[numCity];
         Set<Integer> zeros = new HashSet<>();
         Map<Integer, Set<Integer>> relation = new HashMap<>();
 
         for (int i = 0; i < numCity; i++){
             int city = input.nextInt();
-            if (city == 0){
-                zeros.add(i);
-            }
-            else{
+
+            if(city == 1) {
                 if (!relation.containsKey(i)){
                     relation.put(i, new HashSet<Integer>());
                 }
@@ -38,23 +35,21 @@ public class GoodlandElectricity{
 
         boolean bol = true;
         int ans = 0;
-        for(int i:zeros){
-            if (sum[i] == 0){
-                bol = false;
-                break;
-            }
-        }
 
         if(bol){
             int counter = 0;
-            int flag = 0;
             while(counter <= numCity){
+                int flag = -1;
                 for(int i = 0; i < numCity; i++){
                     if (relation.containsKey(i)){
                         if (relation.get(i).contains(counter)){
                             flag = i;
                         }
                     }
+                }
+                if(flag == -1) {
+                    bol = false;
+                    break;
                 }
                 ans++;
                 int precounter = counter;
