@@ -21,7 +21,7 @@ public class DreamoonandWiFi {
 
         solve(string);
 
-        System.out.println(counter/numQuestion);
+        System.out.println(counter/Math.pow(2, numQuestion));
     }
 
     public static void solve(StringBuilder string){
@@ -33,10 +33,10 @@ public class DreamoonandWiFi {
             else{
             }
         }
+        // recursive case
         else{
             for (char c:SET){
                 solve(string.append(c));
-               
                 string.deleteCharAt(string.length()-1);
             }
         }
