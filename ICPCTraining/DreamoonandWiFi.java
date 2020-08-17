@@ -24,28 +24,22 @@ public class DreamoonandWiFi {
         System.out.println(counter/numQuestion);
     }
 
-    public static boolean solve(StringBuilder string){
+    public static void solve(StringBuilder string){
         // base case
         if (string.length() == numQuestion){
             if (sumOfString(string.toString()) == sum){
                 counter++;
-                return true;
             }
             else{
-                return false;
             }
         }
-        // recursive case
         else{
             for (char c:SET){
-                if(solve(string.append(c))){
-                    return true;
-                }
+                solve(string.append(c));
+               
                 string.deleteCharAt(string.length()-1);
-                return false;
             }
         }
-        return false;
     }
 
     public static int sumOfString(String s){
