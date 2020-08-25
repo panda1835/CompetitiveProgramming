@@ -33,14 +33,31 @@ public class KefaAndCompany{
         }
         
         Collections.sort(moneyList); 
-        
+        long sum = 0; 
+        int temptUpper = 0; // temporary upper from previous iteration
+
         for(int lower = 0; lower < moneyList.size(); lower++){
-    
-            long sum = 0;
-            int upper = binarySearchLeast(lower);
-            for (int i = lower; i <= upper; i++){
-                sum += friendMap.get(moneyList.get(i));
+            // init sum
+            if(lower == 0){
+                int upper = binarySearchLeast(lower);
+                temptUpper = upper;
+                for (int i = lower; i <= upper; i++){
+                    sum += friendMap.get(moneyList.get(i));
+                }
             }
+            // for each next iteration, there's no need to recalculate sum
+            // Instead one can reuse the previous sum by subtracting the 
+            // friendship of previous lower and adding money of additional upper
+            // This helps reduce the runtime significantly
+            else{
+                sum -= friendMap.get(moneyList.get(lower-1));
+                int upper = binarySearchLeast(lower);
+                for (int i = temptUpper+1; i <= upper; i++){
+                    sum += friendMap.get(moneyList.get(i));
+                }
+                temptUpper = upper;
+            }
+        
             if (maxFriendFactor < sum){
                 maxFriendFactor = sum;
             }
