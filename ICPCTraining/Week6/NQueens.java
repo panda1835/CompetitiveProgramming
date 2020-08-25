@@ -1,3 +1,5 @@
+package Week6;
+
 import java.util.*;
 
 public class NQueens {
