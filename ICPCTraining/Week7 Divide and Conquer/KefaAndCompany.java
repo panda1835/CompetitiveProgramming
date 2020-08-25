@@ -3,7 +3,20 @@ import java.util.*;
 public class KefaAndCompany{
 
     // http://codeforces.com/problemset/problem/580/B
-    
+    /**
+     * Idea:
+     * Sort the list of money.
+     * Go from the least money person to the richest, for each iteration at 
+     * person LOWER, find the person (call UPPER) who has the least money 
+     * but still no more than d-different from LOWER 
+     * (This is done by binarySearchLeast() method). 
+     * Then evaluate the total friendship of a range of people whose
+     * money from LOWER to UPPER. The solution is the largest sum.
+     * 
+     * Other remarks:
+     * When calculate the sum, I should not calculate from scratch but reuse 
+     * from previous iteration. This help increase speed significantly.
+     */
     static Map<Integer, Long> friendMap = new HashMap<>();
     static List<Integer> moneyList;
     static int d;
@@ -18,6 +31,8 @@ public class KefaAndCompany{
         for (int i = 0; i < n; i++){
             int m = input.nextInt();
             int s = input.nextInt();
+            // if 2 people have the same money then WLOG I can combine them 
+            // into 1 person whose friendship factor equals total of the two
             if (friendMap.keySet().contains(m)){
                 friendMap.put(m, friendMap.get(m) + s);
             }
