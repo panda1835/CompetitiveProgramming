@@ -6,7 +6,6 @@ public class KefaAndCompany{
     
     static Map<Integer, Long> friendMap = new HashMap<>();
     static List<Integer> moneyList;
-    static int placeholder = -1;
     static int d;
     static long maxFriendFactor = 0;
     public static void main(String[] args){
@@ -45,10 +44,10 @@ public class KefaAndCompany{
                     sum += friendMap.get(moneyList.get(i));
                 }
             }
-            // for each next iteration, there's no need to recalculate sum
+            // For each next iteration, there's no need to recalculate the sum
             // Instead one can reuse the previous sum by subtracting the 
             // friendship of previous lower and adding money of additional upper
-            // This helps reduce the runtime significantly
+            // This helps reduce the speed significantly!
             else{
                 sum -= friendMap.get(moneyList.get(lower-1));
                 int upper = binarySearchLeast(lower);
@@ -81,36 +80,22 @@ public class KefaAndCompany{
         int max = moneyList.get(lower) + d;
         int lo = lower;
         int hi = moneyList.size()-1;
-        if (lower == 0){
-            while (lo<hi-1){
-                int mid = (int) Math.floor((lo+hi)/2);
-                if (moneyList.get(mid) < max){
-                    lo = mid;
-                }
-                else{
-                    hi = mid;
-                }
-            }
-            if (moneyList.get(hi) >= max){
-                placeholder = lo;
-                return lo;
+        
+        while (lo<hi-1){
+            int mid = (int) Math.floor((lo+hi)/2);
+            if (moneyList.get(mid) < max){
+                lo = mid;
             }
             else{
-                placeholder = hi;
-                return hi;
+                hi = mid;
             }
+        }
+        if (moneyList.get(hi) >= max){
+            return lo;
+        }
+        else{
+            return hi;
         }
         
-        else{
-            for (int i = placeholder; i < moneyList.size(); i++){
-                placeholder = i;
-                
-                if(moneyList.get(i) >= max){
-                    placeholder = i-1;
-                    break;
-                }
-            }
-        }
-        return placeholder;
     }
 }
