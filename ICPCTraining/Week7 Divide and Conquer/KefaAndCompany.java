@@ -5,7 +5,8 @@ public class KefaAndCompany{
     // http://codeforces.com/problemset/problem/580/B
     
     static Map<Integer, Long> friendMap = new HashMap<>();
-    
+    static List<Integer> moneyList;
+    static int placeholder = -1;
     static int d;
     static long maxFriendFactor = 0;
     public static void main(String[] args){
@@ -26,7 +27,7 @@ public class KefaAndCompany{
             }
         }
     
-        List<Integer> moneyList = new ArrayList<>();
+        moneyList = new ArrayList<>();
         for (int i: friendMap.keySet()){
             moneyList.add(i);
         }
@@ -36,8 +37,8 @@ public class KefaAndCompany{
         for(int lower = 0; lower < moneyList.size(); lower++){
     
             long sum = 0;
-            int upper = binarySearchLeast(lower, moneyList);
-            for (int i = lower; i < upper+1; i++){
+            int upper = binarySearchLeast(lower);
+            for (int i = lower; i <= upper; i++){
                 sum += friendMap.get(moneyList.get(i));
             }
             if (maxFriendFactor < sum){
@@ -51,7 +52,7 @@ public class KefaAndCompany{
 
 
     /**
-     * lower = 2, d = 10
+     * lower-index = 2, d = 10
      * [1,2,3,4,5,6,7,8,9,10,11,12,13,14] -> [3..12] -> return 11
      * 
      * @param moneyList list of friends money in increasing order
@@ -59,24 +60,40 @@ public class KefaAndCompany{
      * @return the index of the highest number that is no more than d-difference
      * from number at lowerbound index
      */
-    public static int binarySearchLeast(int lower, List<Integer> moneyList){
-        int max = lower + d;
+    public static int binarySearchLeast(int lower){
+        int max = moneyList.get(lower) + d;
         int lo = lower;
         int hi = moneyList.size()-1;
-        while (lo<hi-1){
-            int mid = (int) Math.floor((lo+hi)/2);
-            if (moneyList.get(mid) < max){
-                lo = mid;
+        if (lower == 0){
+            while (lo<hi-1){
+                int mid = (int) Math.floor((lo+hi)/2);
+                if (moneyList.get(mid) < max){
+                    lo = mid;
+                }
+                else{
+                    hi = mid;
+                }
+            }
+            if (moneyList.get(hi) >= max){
+                placeholder = lo;
+                return lo;
             }
             else{
-                hi = mid;
+                placeholder = hi;
+                return hi;
             }
         }
-        if (moneyList.get(hi) > max){
-            return lo;
+        
+        else{
+            for (int i = placeholder; i < moneyList.size(); i++){
+                placeholder = i;
+                
+                if(moneyList.get(i) >= max){
+                    placeholder = i-1;
+                    break;
+                }
+            }
         }
-        return hi;
+        return placeholder;
     }
-
-
 }
